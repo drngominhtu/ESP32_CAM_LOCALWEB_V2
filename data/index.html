@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP32-CAM Control</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>ESP32-CAM Control Panel</h2>
+  <div class="container">
+    <div class="controls">
+      <button onclick="startStream()">Start Stream</button>
+      <button onclick="stopStream()">Stop Stream</button>
+      <button onclick="flipH()">Flip Horizontal</button>
+      <button onclick="flipV()">Flip Vertical</button>
+      <button onclick="capture()">Capture Photo</button>
+    </div>
+    <div class="video">
+      <img id="cam" style="display:none">
+    </div>
+  </div>
+
+  <script>
+    function startStream() {
+      document.getElementById('cam').src = '/stream';
+      document.getElementById('cam').style.display = 'block';
+    }
+    function stopStream() {
+      document.getElementById('cam').src = "";
+      document.getElementById('cam').style.display = 'none';
+    }
+    function flipH() {
+      fetch('/flipH').then(() => startStream());
+    }
+    function flipV() {
+      fetch('/flipV').then(() => startStream());
+    }
+    function capture() {
+      fetch('/capture').then(res => {
+        if (res.ok) alert("Photo saved to SD card.");
+        else alert("Failed to save photo.");
+      });
+    }
+  </script>
+</body>
+</html>
